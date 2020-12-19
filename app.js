@@ -7,8 +7,10 @@ const expressValidator = require("express-validator");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const router = require("./routers/router");
 const { authErrorHandler } = require("./middlewares");
+const globalRouter = require("./routers/globalRouter");
+const userRouter = require("./routers/userRouter");
+const postRouter = require("./routers/postRouter");
 
 const app = express();
 
@@ -33,7 +35,9 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 // routers
-app.use("/", router);
+app.use("/", globalRouter);
+app.use("/", userRouter);
+app.use("/", postRouter);
 
 // Unauthorized Error Handler
 app.use(authErrorHandler);
