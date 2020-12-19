@@ -8,21 +8,23 @@ const {
 } = require("../middlewares");
 const {
   getHome,
-  createPost,
-  getAllUsers,
-} = require("../controllers/globalController");
-const {
   login,
   logout,
   signUp,
+} = require("../controllers/globalController");
+const {
   userById,
+  getAllUsers,
+  getUser,
 } = require("../controllers/userController");
+const { createPost } = require("../controllers/postController");
 const router = express.Router();
 
 // GET method
 router.get("/", getHome);
 router.get("/logout", logout);
 router.get("/users", getAllUsers);
+router.get("/user/:userId", requireLogin, getUser);
 
 // POST method
 router.post("/login", loginValidator, login);
