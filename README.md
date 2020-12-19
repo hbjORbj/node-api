@@ -13,6 +13,6 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [x] deleteUser()
 - [x] getAllPosts()
 - [x] createPost()
-- [ ] getPostsByUser()
+- [x] getPostsByUser()
 - [ ] deletePost()
 - [ ] updatePost()

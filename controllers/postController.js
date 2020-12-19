@@ -7,16 +7,36 @@ const fs = require("fs");
 Get Posts
 **
 */
-exports.getAllPosts = (req, res) => {
-  Post.find()
-    .populate("postedBy", "_id name")
-    .select("_id title body")
+exports.getAllPosts = async (req, res) => {
+  await Post.find()
+    .populate("postedBy", "_id name") // getting post owner's information
+    .select("_id title body created")
     .then((posts) => {
       res.json({ posts });
     })
     .catch((error) =>
       res.status(400).json({ error: "Posts could not be loaded." })
     );
+};
+
+/* 
+**
+Get all posts by user
+**
+*/
+exports.getPostsByUser = async (req, res) => {
+  const { _id } = req.profile;
+  await Post.find({ postedBy: _id })
+    .populate("postedBy", "_id name") // getting post owner's information
+    .select("_id title body created")
+    .sort({ created: -1 })
+    .exec((err, posts) => {
+      if (err) {
+        res.status(200).json({ error: "Posts could not be loaded." });
+      } else {
+        res.json(posts);
+      }
+    });
 };
 
 /* 

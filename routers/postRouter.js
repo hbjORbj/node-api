@@ -1,5 +1,9 @@
 const express = require("express");
-const { createPost, getAllPosts } = require("../controllers/postController");
+const {
+  createPost,
+  getAllPosts,
+  getPostsByUser,
+} = require("../controllers/postController");
 const { userById } = require("../controllers/userController");
 const {
   requireLogin,
@@ -7,8 +11,10 @@ const {
   createPostValidator,
 } = require("../middlewares");
 const postRouter = express.Router();
+
 // GET method
 postRouter.get("/", getAllPosts);
+postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
 
 // POST method
 postRouter.post(
