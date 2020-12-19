@@ -16,3 +16,7 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [x] getPostsByUser()
 - [x] deletePost()
 - [x] updatePost()
+- [ ] likePost()
+- [ ] unlikePost()
+- [ ] followUser()
+- [ ] unfollowUser()
