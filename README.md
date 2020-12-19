@@ -22,13 +22,13 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [ ] unfollowUser()
 
 ## Routes:
-- "/api": "api document",
-- "/api/signup": "signup",
-- "/api/login": "log in",
-- "/api/logout": "log out",
-- "/api/users": "get all users",
-- "/api/user/:userId": "get / update / delete user",
-- "/api/posts": "get all posts",
-- "/api/post/new/:userId": "create new post",
-- "/api/posts/by/:userId": "get all posts by user",
-- "/api/post/:postId": "update / delete post"
+- /api: api document,
+- /api/signup: sign up,
+- /api/login: log in,
+- /api/logout: log out,
+- /api/users:"get all users,
+- /api/user/:userId: get / update / delete user,
+- /api/posts: get all posts,
+- /api/post/new/:userId: create new post,
+- /api/posts/by/:userId: get all posts by user,
+- /api/post/:postId: update / delete post

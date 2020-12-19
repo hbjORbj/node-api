@@ -1,6 +1,6 @@
 {
     "/api": "api document",
-    "/api/signup": "signup",
+    "/api/signup": "sign up",
     "/api/login": "log in",
     "/api/logout": "log out",
     "/api/users": "get all users",
