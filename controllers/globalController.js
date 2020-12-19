@@ -1,20 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Post = require("../models/Post");
 const User = require("../models/User");
-
-/* 
-**
-Get Home
-**
-*/
-exports.getHome = (req, res) => {
-  const posts = Post.find()
-    .select("_id title body")
-    .then((posts) => {
-      res.json({ posts: posts });
-    })
-    .catch((error) => console.log(error));
-};
 
 /* 
 **

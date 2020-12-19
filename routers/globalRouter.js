@@ -1,15 +1,9 @@
 const express = require("express");
-const {
-  getHome,
-  logout,
-  login,
-  signUp,
-} = require("../controllers/globalController");
+const { logout, login, signUp } = require("../controllers/globalController");
 const { loginValidator, signUpValidator } = require("../middlewares");
 const globalRouter = express.Router();
 
 // GET method
-globalRouter.get("/", getHome);
 globalRouter.get("/logout", logout);
 
 // POST method
