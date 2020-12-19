@@ -72,7 +72,7 @@ exports.logout = (req, res) => {
 /* 
 **
 Find User by id
-and add a profile object (filled with user info) to req
+and Add a profile object (filled with user info) to req
 **
 */
 exports.userById = (req, res, next, id) => {

@@ -47,16 +47,52 @@ exports.signUpValidator = (req, res, next) => {
   req
     .check("email")
     .matches(/.+\@.+\..+/)
-    .withMessage("Invalid email form.");
+    .withMessage("Invalid email address.");
 
   // password
   req.check("password", "Set your password.").notEmpty();
   req
     .check("password")
-    .isLength({ min: 6, max: 20 })
-    .withMessage("Your password must be between 6 and 20 characters.")
+    .isLength({ min: 6 })
+    .withMessage("Your password must contain at least 6 characters.")
     .matches(/\d/)
     .withMessage("Your password must contain one or more numbers.");
+
+  // check for errors
+  const errors = req.validationErrors();
+
+  if (errors) {
+    const firstError = errors[0].msg;
+    return res.status(400).json({ error: firstError });
+  }
+
+  // proceed to next middleware
+  next();
+};
+
+/* 
+**
+Log In Validator 
+**
+*/
+exports.loginValidator = (req, res, next) => {
+  // Check email
+  req.check("email", "Type your email.").notEmpty();
+  req
+    .check("email")
+    .matches(
+      /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+    )
+    .withMessage("Invalid email address.");
+
+  // Check password
+  req.check("password", "Type your password.").notEmpty();
+  req
+    .check("password")
+    .isLength({
+      min: 6,
+    })
+    .withMessage("Invalid Token!");
 
   // check for errors
   const errors = req.validationErrors();
@@ -87,7 +123,7 @@ exports.requireLogin = expressJwt({
 /* 
 **
 Check if user is authorised
-: To Protect routes that can be accessed only by authorised users
+: To Protect routes that can be operated only by authorised users
 **
 */
 exports.isAuthorized = (req, res, next) => {

@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 exports.getHome = (req, res) => {
   const posts = Post.find()
@@ -16,4 +17,16 @@ exports.createPost = (req, res) => {
       post: result,
     });
   });
+};
+
+exports.getAllUsers = (req, res) => {
+  User.find((error, users) => {
+    if (error) {
+      return res.status(400).json({
+        error,
+      });
+    } else {
+      res.json({ users: users });
+    }
+  }).select("name email created updated");
 };

@@ -2,10 +2,15 @@ const express = require("express");
 const {
   createPostValidator,
   signUpValidator,
+  loginValidator,
   requireLogin,
   isAuthorized,
 } = require("../middlewares");
-const { getHome, createPost } = require("../controllers/globalController");
+const {
+  getHome,
+  createPost,
+  getAllUsers,
+} = require("../controllers/globalController");
 const {
   login,
   logout,
@@ -17,9 +22,10 @@ const router = express.Router();
 // GET method
 router.get("/", getHome);
 router.get("/logout", logout);
+router.get("/users", getAllUsers);
 
 // POST method
-router.post("/login", login);
+router.post("/login", loginValidator, login);
 router.post("/signup", signUpValidator, signUp);
 router.post(
   "/post",
