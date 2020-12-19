@@ -6,7 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController");
-const { requireLogin, isAuthorized } = require("../middlewares");
+const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
 
 // GET method
@@ -16,10 +16,10 @@ userRouter.get("/user/:userId", requireLogin, getUser);
 // POST method
 
 // PUT method
-userRouter.put("/user/:userId", requireLogin, isAuthorized, updateUser);
+userRouter.put("/user/:userId", requireLogin, isAccountOwner, updateUser);
 
 // DELETE method
-userRouter.delete("/user/:userId", requireLogin, isAuthorized, deleteUser);
+userRouter.delete("/user/:userId", requireLogin, isAccountOwner, deleteUser);
 
 // For any route containing "userId", we execute userById() method
 userRouter.param("userId", userById);

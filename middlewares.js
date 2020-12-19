@@ -122,13 +122,31 @@ exports.requireLogin = expressJwt({
 
 /* 
 **
-Check if user is authorised
-: To Protect routes that can be operated only by authorised users
+Check if user is the account owner
+: To Protect routes that can be operated only by account owners (e.g. delete account, update account)
 **
 */
-exports.isAuthorized = (req, res, next) => {
-  const authorised = req.profile && req.auth && req.auth._id == req.profile._id;
-  if (authorised) {
+exports.isAccountOwner = (req, res, next) => {
+  const isOwner = req.profile && req.auth && req.auth._id == req.profile._id;
+  if (isOwner) {
+    next();
+  } else {
+    res.status(403).json({
+      error: "You are not authorized to do this operation.",
+    });
+  }
+};
+
+/* 
+**
+Check if user is the post owner
+: To Protect routes that can be operated only by post owners (e.g. delete post, update post)
+**
+*/
+exports.isPostOwner = (req, res, next) => {
+  const isOwner = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+  console.log(req.post.postedBy);
+  if (isOwner) {
     next();
   } else {
     res.status(403).json({

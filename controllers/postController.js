@@ -4,6 +4,27 @@ const fs = require("fs");
 
 /* 
 **
+Find post by id
+and add a post object (filled with post info) to req
+**
+*/
+exports.postById = (req, res, next, id) => {
+  Post.findById(id)
+    .populate("postedBy", "_id name") // getting post owner's information
+    .exec((err, post) => {
+      if (err || !post) {
+        return res.status(400).json({
+          error: "Post not found",
+        });
+      } else {
+        req.post = post;
+        next();
+      }
+    });
+};
+
+/* 
+**
 Get Posts
 **
 */
@@ -67,6 +88,39 @@ exports.createPost = (req, res) => {
           res.json(result);
         }
       });
+    }
+  });
+};
+
+/* 
+**
+Update a post
+**
+*/
+exports.updatePost = async (req, res) => {
+  const { _id } = req.post;
+  const { title, body } = req.body;
+  await Post.updateOne({ _id }, { title, body, updated: Date.now() }, (err) => {
+    if (err) {
+      res.status(400).json({ error: "Post could not be updated." });
+    } else {
+      res.json({ message: "Post has been updated successfully." });
+    }
+  });
+};
+
+/* 
+**
+Delete a post
+**
+*/
+exports.deletePost = async (req, res) => {
+  const { _id } = req.post;
+  await Post.deleteOne({ _id }, (err) => {
+    if (err) {
+      res.status(400).json({ error: "Post could not be deleted." });
+    } else {
+      res.json({ message: "Post has been deleted successfully." });
     }
   });
 };

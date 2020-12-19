@@ -12,9 +12,10 @@ exports.userById = (req, res, next, id) => {
       return res.status(400).json({
         error: "User not found",
       });
+    } else {
+      req.profile = user;
+      next();
     }
-    req.profile = user;
-    next();
   });
 };
 
