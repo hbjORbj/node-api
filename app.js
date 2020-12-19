@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator");
+const fs = require("fs");
+const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -33,11 +35,21 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 // routers
-app.use("/", globalRouter);
-app.use("/", userRouter);
-app.use("/", postRouter);
+app.get("/api", (req, res) => {
+  fs.readFile("docs/apiDoc.json", (err, data) => {
+    if (err) {
+      res.status(400).json({ error: err });
+    } else {
+      res.json(JSON.parse(data));
+    }
+  });
+});
+app.use("/api", globalRouter);
+app.use("/api", userRouter);
+app.use("/api", postRouter);
 
 // Unauthorized Error Handler
 app.use(authErrorHandler);

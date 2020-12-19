@@ -32,12 +32,13 @@ exports.getAllPosts = async (req, res) => {
   await Post.find()
     .populate("postedBy", "_id name") // getting post owner's information
     .select("_id title body created")
-    .then((posts) => {
-      res.json({ posts });
-    })
-    .catch((error) =>
-      res.status(400).json({ error: "Posts could not be loaded." })
-    );
+    .exec((err, posts) => {
+      if (err) {
+        res.status(400).json({ error: "Posts could not be loaded." });
+      } else {
+        res.json(posts);
+      }
+    });
 };
 
 /* 

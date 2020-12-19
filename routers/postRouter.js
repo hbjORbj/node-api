@@ -17,7 +17,7 @@ const {
 const postRouter = express.Router();
 
 // GET method
-postRouter.get("/", getAllPosts);
+postRouter.get("/posts", getAllPosts);
 postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
 
 // POST method
