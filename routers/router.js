@@ -16,6 +16,8 @@ const {
   userById,
   getAllUsers,
   getUser,
+  updateUser,
+  deleteUser,
 } = require("../controllers/userController");
 const { createPost } = require("../controllers/postController");
 const router = express.Router();
@@ -36,6 +38,12 @@ router.post(
   createPostValidator,
   createPost
 );
+
+// PUT method
+router.put("/user/:userId", requireLogin, isAuthorized, updateUser);
+
+// DELETE method
+router.delete("/user/:userId", requireLogin, isAuthorized, deleteUser);
 
 // For any route containing "userId", we execute userById() method
 router.param("userId", userById);

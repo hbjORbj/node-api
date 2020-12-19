@@ -127,8 +127,7 @@ Check if user is authorised
 **
 */
 exports.isAuthorized = (req, res, next) => {
-  const authorised =
-    req.profile && req.auth && req.auth._id === req.profile._id;
+  const authorised = req.profile && req.auth && req.auth._id == req.profile._id;
   if (authorised) {
     next();
   } else {
