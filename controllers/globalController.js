@@ -37,8 +37,8 @@ exports.login = async (req, res) => {
       // generate a token using user id and secret
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
-      // create a cookie with token and expiry time of 5 minutes
-      res.cookie("t", token, { expire: new Date() + 3000000 });
+      // create a cookie with token and expiry time of 2 hours
+      res.cookie("t", token, { expire: new Date() + 7200000 });
 
       // return response with token and user's information except password to the front-end client
       const { _id, name, email } = user;

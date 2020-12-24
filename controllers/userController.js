@@ -31,9 +31,9 @@ exports.getAllUsers = (req, res) => {
         error,
       });
     } else {
-      res.json({ users: users });
+      res.json(users);
     }
-  }).select("name email created updated");
+  }).select("_id name email created updated");
 };
 
 /* 
@@ -43,7 +43,7 @@ Get a single user
 */
 exports.getUser = (req, res) => {
   const { _id, name, email, created, updated } = req.profile;
-  res.json({ _id, name, email, created, updated });
+  return res.json({ _id, name, email, created, updated });
 };
 
 /*
@@ -75,3 +75,7 @@ exports.deleteUser = async (req, res) => {
     }
   });
 };
+
+exports.followUser = (req, res) => {};
+
+exports.unfollowUser = (req, res) => {};

@@ -92,7 +92,7 @@ exports.loginValidator = (req, res, next) => {
     .isLength({
       min: 6,
     })
-    .withMessage("Invalid Token!");
+    .withMessage("Password must contain at least 6 characters or numbers.");
 
   // check for errors
   const errors = req.validationErrors();
