@@ -5,6 +5,7 @@ const {
   userById,
   updateUser,
   deleteUser,
+  getUserPhoto,
 } = require("../controllers/userController");
 const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
@@ -12,6 +13,7 @@ const userRouter = express.Router();
 // GET method
 userRouter.get("/users", getAllUsers);
 userRouter.get("/user/:userId", requireLogin, getUser);
+// userRouter.get("/user/photo/:userId", getUserPhoto);
 
 // POST method
 

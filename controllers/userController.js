@@ -46,16 +46,30 @@ exports.getUser = (req, res) => {
   return res.json({ _id, name, email, created, updated });
 };
 
+// /*
+// **
+// Get user's photo
+// **
+// */
+// exports.getUserPhoto = (req, res, next) => {
+//   const { photo } = req.profile;
+//   if (photo.data) {
+//     res.set(("Content-Type", photo.contentType));
+//     return res.send(photo.data);
+//   }
+//   next();
+// };
+
 /*
 **
 Update a user
 **
 */
 exports.updateUser = async (req, res) => {
-  const { _id, created, updated } = req.profile;
-  const { name, email } = req.body;
-  await User.updateOne({ _id }, { name, email, updated: Date.now() });
-  res.json({ _id, name, email, created, updated });
+  const { _id, name, email } = req.body;
+  await User.findOneAndUpdate({ _id }, { name, email, updated: Date.now() });
+  const { created, updated } = User.findById(_id);
+  return res.json({ _id, name, email, created, updated });
 };
 
 /*
