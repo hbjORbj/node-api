@@ -157,15 +157,22 @@ exports.deleteUser = async (req, res) => {
 exports.followUser = async (req, res) => {
   const { userId, targetId } = req.body;
 
-  await User.findByIdAndUpdate(userId, {
-    $push: { following: targetId },
-  }).exec((err, result) => {
+  await User.findByIdAndUpdate(
+    { _id: userId },
+    {
+      $push: { following: targetId },
+    }
+  ).exec((err, result) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
   });
 
-  await User.findByIdAndUpdate(targetId, { $push: { followers: userId } })
+  await User.findByIdAndUpdate(
+    { _id: targetId },
+    { $push: { followers: userId } },
+    { new: true }
+  )
     .populate("following", "_id name")
     .populate("followers", "_id name")
     .exec((err, result) => {
@@ -185,13 +192,12 @@ exports.unfollowUser = async (req, res) => {
     { _id: userId },
     {
       $pull: { following: targetId },
-    },
-    (err, result) => {
-      if (err) {
-        return res.status(400).json({ error: err });
-      }
     }
-  );
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+  });
 
   await User.findByIdAndUpdate(
     { _id: targetId },
@@ -201,7 +207,7 @@ exports.unfollowUser = async (req, res) => {
     { new: true }
   )
     .populate("following", "_id name")
-    .populate("following", "_id name")
+    .populate("followers", "_id name")
     .exec((err, result) => {
       if (err) {
         return res.status(400).json({ error: err });
