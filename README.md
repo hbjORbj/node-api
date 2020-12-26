@@ -16,10 +16,10 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [x] getPostsByUser()
 - [x] deletePost()
 - [x] updatePost()
+- [x] followUser()
+- [x] unfollowUser()
 - [ ] likePost()
 - [ ] unlikePost()
-- [ ] followUser()
-- [ ] unfollowUser()
 
 ## Routes:
 - /api: api document,
@@ -28,6 +28,8 @@ These NodeJS APIs can be very useful especially for social network services (for
 - /api/logout: log out,
 - /api/users:"get all users,
 - /api/user/:userId: get / update / delete user,
+- /api/user/follow: follow user,
+- /api/user/unfollow: unfollow user,
 - /api/posts: get all posts,
 - /api/post/new/:userId: create new post,
 - /api/posts/by/:userId: get all posts by user,
