@@ -10,6 +10,7 @@ and add a profile object (filled with user info) to req
 **
 */
 exports.userById = (req, res, next, id) => {
+  console.log(id);
   User.findById(id)
     .populate("following", "_id name")
     .populate("followers", "_id name")
@@ -48,8 +49,26 @@ Get a single user
 **
 */
 exports.getUser = (req, res) => {
-  const { _id, name, email, created, updated } = req.profile;
-  return res.json({ _id, name, email, created, updated });
+  const {
+    _id,
+    name,
+    email,
+    followers,
+    following,
+    posts,
+    created,
+    updated,
+  } = req.profile;
+  return res.json({
+    _id,
+    name,
+    email,
+    followers,
+    following,
+    posts,
+    created,
+    updated,
+  });
 };
 
 /* 
@@ -105,7 +124,7 @@ Delete a user
 **
 */
 exports.deleteUser = async (req, res) => {
-  const { _id } = req.profile;
+  const _id = req.body.userId;
   await User.deleteOne({ _id }, (error) => {
     if (error) {
       res.status(400).json({ error });
@@ -117,29 +136,18 @@ exports.deleteUser = async (req, res) => {
   });
 };
 
-exports.addFollowing = async (req, res, next) => {
+exports.followUser = async (req, res) => {
   const { userId, targetId } = req.body;
-  await User.findByIdAndUpdate(
-    { _id: userId },
-    {
-      $push: { following: targetId },
-    },
-    (err, result) => {
-      if (err) {
-        return res.status(400).json({ error: err });
-      }
-      next();
-    }
-  );
-};
 
-exports.addFollower = async (req, res) => {
-  const { userId, targetId } = req.body;
-  await User.findByIdAndUpdate(
-    { _id: targetId },
-    { $push: { followers: userId } },
-    { new: true }
-  )
+  await User.findByIdAndUpdate(userId, {
+    $push: { following: targetId },
+  }).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+  });
+
+  await User.findByIdAndUpdate(targetId, { $push: { followers: userId } })
     .populate("following", "_id name")
     .populate("followers", "_id name")
     .exec((err, result) => {
@@ -153,7 +161,7 @@ exports.addFollower = async (req, res) => {
     });
 };
 
-exports.removeFollowing = async (req, res, next) => {
+exports.unfollowUser = async (req, res) => {
   const { userId, targetId } = req.body;
   await User.findByIdAndUpdate(
     { _id: userId },
@@ -164,13 +172,9 @@ exports.removeFollowing = async (req, res, next) => {
       if (err) {
         return res.status(400).json({ error: err });
       }
-      next();
     }
   );
-};
 
-exports.removeFollower = async (req, res) => {
-  const { userId, targetId } = req.body;
   await User.findByIdAndUpdate(
     { _id: targetId },
     {

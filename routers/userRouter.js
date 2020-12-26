@@ -6,28 +6,21 @@ const {
   updateUser,
   deleteUser,
   getUserPhoto,
-  addFollowing,
-  addFollower,
-  removeFollower,
-  removeFollowing,
+  followUser,
+  unfollowUser,
 } = require("../controllers/userController");
 const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
 
-// GET method
+userRouter.put("/user/follow", requireLogin, followUser);
+userRouter.put("/user/unfollow", requireLogin, unfollowUser);
 userRouter.get("/users", getAllUsers);
+
+// User Id
 userRouter.get("/user/:userId", requireLogin, getUser);
-userRouter.get("/user/photo/:userId", getUserPhoto);
-
-// POST method
-
-// PUT method
 userRouter.put("/user/:userId", requireLogin, isAccountOwner, updateUser);
-userRouter.put("/user/follow", requireLogin, addFollowing, addFollower);
-userRouter.put("/user/unfollow", requireLogin, removeFollowing, removeFollower);
-
-// DELETE method
 userRouter.delete("/user/:userId", requireLogin, isAccountOwner, deleteUser);
+userRouter.get("/user/photo/:userId", getUserPhoto);
 
 // For any route containing "userId", we execute userById() method
 userRouter.param("userId", userById);
