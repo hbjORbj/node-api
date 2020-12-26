@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { v1 } = require("uuid");
 const crypto = require("crypto");
+const { ObjectId } = mongoose.Schema;
+const Post = require("./Post");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -13,10 +15,16 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
+  about: {
+    type: String,
+    trim: true,
+  },
   photo: {
     data: Buffer,
     contentType: String,
   },
+  followers: [{ type: ObjectId, ref: "User" }],
+  following: [{ type: ObjectId, ref: "User" }],
   hashedPassword: {
     type: String,
     trim: true,

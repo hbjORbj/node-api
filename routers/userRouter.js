@@ -6,6 +6,10 @@ const {
   updateUser,
   deleteUser,
   getUserPhoto,
+  addFollowing,
+  addFollower,
+  removeFollower,
+  removeFollowing,
 } = require("../controllers/userController");
 const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
@@ -19,6 +23,8 @@ userRouter.get("/user/photo/:userId", getUserPhoto);
 
 // PUT method
 userRouter.put("/user/:userId", requireLogin, isAccountOwner, updateUser);
+userRouter.put("/user/follow", requireLogin, addFollowing, addFollower);
+userRouter.put("/user/unfollow", requireLogin, removeFollowing, removeFollower);
 
 // DELETE method
 userRouter.delete("/user/:userId", requireLogin, isAccountOwner, deleteUser);
