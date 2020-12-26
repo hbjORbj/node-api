@@ -8,6 +8,7 @@ const {
   getUserPhoto,
   followUser,
   unfollowUser,
+  findPeople,
 } = require("../controllers/userController");
 const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
@@ -20,6 +21,7 @@ userRouter.get("/users", getAllUsers);
 userRouter.get("/user/:userId", requireLogin, getUser);
 userRouter.put("/user/:userId", requireLogin, isAccountOwner, updateUser);
 userRouter.delete("/user/:userId", requireLogin, isAccountOwner, deleteUser);
+userRouter.get("/user/findpeople/:userId", requireLogin, findPeople);
 userRouter.get("/user/photo/:userId", getUserPhoto);
 
 // For any route containing "userId", we execute userById() method

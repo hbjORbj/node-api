@@ -40,7 +40,23 @@ exports.getAllUsers = (req, res) => {
     } else {
       res.json(users);
     }
-  }).select("_id name email created updated");
+  }).select("_id name email created");
+};
+
+/* 
+**
+Get users except those already followed by logged-in user
+**
+*/
+exports.findPeople = (req, res) => {
+  const following = req.profile.following;
+  following.push(req.profile._id);
+  User.find({ _id: { $nin: following } }, (error, users) => {
+    if (error) return res.status(400).json({ error });
+    else {
+      res.json(users);
+    }
+  }).select("_id name email created");
 };
 
 /* 
@@ -56,6 +72,7 @@ exports.getUser = (req, res) => {
     followers,
     following,
     posts,
+    about,
     created,
     updated,
   } = req.profile;
@@ -66,6 +83,7 @@ exports.getUser = (req, res) => {
     followers,
     following,
     posts,
+    about,
     created,
     updated,
   });
