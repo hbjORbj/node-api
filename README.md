@@ -2,14 +2,14 @@
 
 These NodeJS APIs can be very useful especially for social network services (for other purposes as well!)
 
-## APIs:
+# APIs:
 
-# Global
+## Global
 - [x] login()
 - [x] logout()
 - [x] signUp()
   
-# User
+## User
 - [x] getUser()
 - [x] getAllUsers()
 - [x] updateUser()
@@ -18,7 +18,7 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [x] unfollowUser()
 - [x] findPeople() 
   
-# Post
+## Post
 - [x] getAllPosts()
 - [x] createPost()
 - [x] getPostsByUser()
@@ -27,22 +27,22 @@ These NodeJS APIs can be very useful especially for social network services (for
 - [ ] likePost()
 - [ ] unlikePost()
 
-## Routes:
+# Routes:
 
-# Global
+## Global
 - /api: api document
 - /api/signup: sign up
 - /api/login: log in
 - /api/logout: log out
 - 
-# User
+## User
 - /api/users: get all users
 - /api/user/:userId: get / update / delete user
 - /api/user/findpeople/:userId: find users not being followed by logged-in user
 - /api/user/follow: follow user
 - /api/user/unfollow: unfollow user
 
-# Post  
+## Post  
 - /api/posts: get all posts
 - /api/post/new/:userId: create new post
 - /api/posts/by/:userId: get all posts by user
