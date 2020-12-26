@@ -1,4 +1,7 @@
 const User = require("../models/User");
+const formidable = require("formidable");
+const _ = require("lodash");
+const fs = require("fs");
 
 /* 
 **
@@ -46,19 +49,18 @@ exports.getUser = (req, res) => {
   return res.json({ _id, name, email, created, updated });
 };
 
-// /*
-// **
-// Get user's photo
-// **
-// */
-// exports.getUserPhoto = (req, res, next) => {
-//   const { photo } = req.profile;
-//   if (photo.data) {
-//     res.set(("Content-Type", photo.contentType));
-//     return res.send(photo.data);
-//   }
-//   next();
-// };
+/* 
+**
+Get a user's photo
+**
+*/
+exports.getUserPhoto = (req, res, next) => {
+  if (req.profile.photo.data) {
+    res.set(("Content-Type", req.profile.photo.contentType));
+    return res.send(req.profile.photo.data);
+  }
+  next();
+};
 
 /*
 **
@@ -66,10 +68,32 @@ Update a user
 **
 */
 exports.updateUser = async (req, res) => {
-  const { _id, name, email } = req.body;
-  await User.findOneAndUpdate({ _id }, { name, email, updated: Date.now() });
-  const { created, updated } = User.findById(_id);
-  return res.json({ _id, name, email, created, updated });
+  let form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      return res.status(400).json({ error: "Photo could not be uploaded." });
+    } else {
+      let user = req.profile;
+      user = _.extend(user, fields);
+      user.updated = Date.now();
+      if (files.photo) {
+        user.photo.data = fs.readFileSync(files.photo.path);
+        user.photo.contentType = files.photo.type;
+      }
+      user.save((err, result) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        } else {
+          user.hashedPassword = undefined;
+          user.salt = undefined;
+          res.json(user);
+        }
+      });
+    }
+  });
 };
 
 /*

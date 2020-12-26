@@ -13,7 +13,7 @@ const userRouter = express.Router();
 // GET method
 userRouter.get("/users", getAllUsers);
 userRouter.get("/user/:userId", requireLogin, getUser);
-// userRouter.get("/user/photo/:userId", getUserPhoto);
+userRouter.get("/user/photo/:userId", getUserPhoto);
 
 // POST method
 
