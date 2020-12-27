@@ -21,6 +21,7 @@ Front-end App associated with these APIs is available [here](https://github.com/
 - [x] findPeople() 
   
 ## Post
+- [x] getPost()
 - [x] getAllPosts()
 - [x] createPost()
 - [x] getPostsByUser()
@@ -46,6 +47,7 @@ Front-end App associated with these APIs is available [here](https://github.com/
 
 ## Post  
 - /api/posts: get all posts
+- /api/post/:postId: get a single post
 - /api/post/new/:userId: create new post
 - /api/posts/by/:userId: get all posts by user
 - /api/post/:postId: update / delete post
