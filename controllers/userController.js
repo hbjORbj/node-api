@@ -10,7 +10,6 @@ and add a profile object (filled with user info) to req
 **
 */
 exports.userById = (req, res, next, id) => {
-  console.log(id);
   User.findById(id)
     .populate("following", "_id name")
     .populate("followers", "_id name")
@@ -71,7 +70,6 @@ exports.getUser = (req, res) => {
     email,
     followers,
     following,
-    posts,
     about,
     created,
     updated,
@@ -82,7 +80,6 @@ exports.getUser = (req, res) => {
     email,
     followers,
     following,
-    posts,
     about,
     created,
     updated,

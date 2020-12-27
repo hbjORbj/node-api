@@ -75,9 +75,10 @@ exports.createPost = (req, res) => {
       res.status(400).json({ error: "Image could not be uploaded." });
     } else {
       let post = new Post(fields);
-      req.profile.hashedPassword = undefined;
-      req.profile.salt = undefined;
-      post.postedBy = req.profile;
+      let user = req.profile;
+      user.hashedPassword = undefined;
+      user.salt = undefined;
+      post.postedBy = user;
       if (files.photo) {
         post.photo.data = fs.readFileSync(files.photo.path);
         post.photo.contentType = files.photo.type;
@@ -124,4 +125,13 @@ exports.deletePost = async (req, res) => {
       res.json({ message: "Post has been deleted successfully." });
     }
   });
+};
+
+/* 
+**
+Get a post
+**
+*/
+exports.getPost = async (req, res) => {
+  return res.json(req.post);
 };
