@@ -7,6 +7,7 @@ const {
   deletePost,
   updatePost,
   getPost,
+  getPostPhoto,
 } = require("../controllers/postController");
 const { userById } = require("../controllers/userController");
 const {
@@ -21,6 +22,7 @@ const postRouter = express.Router();
 postRouter.get("/posts", getAllPosts);
 postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
 postRouter.get("/post/:postId", getPost);
+postRouter.get("/post/photo/:postId", getPostPhoto);
 
 // POST method
 postRouter.post(

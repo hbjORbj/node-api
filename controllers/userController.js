@@ -91,12 +91,11 @@ exports.getUser = (req, res) => {
 Get a user's photo
 **
 */
-exports.getUserPhoto = (req, res, next) => {
+exports.getUserPhoto = (req, res) => {
   if (req.profile.photo.data) {
     res.set(("Content-Type", req.profile.photo.contentType));
     return res.send(req.profile.photo.data);
   }
-  next();
 };
 
 /*

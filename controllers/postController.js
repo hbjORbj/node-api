@@ -135,3 +135,15 @@ Get a post
 exports.getPost = async (req, res) => {
   return res.json(req.post);
 };
+
+/* 
+**
+Get a post's photo
+**
+*/
+exports.getPostPhoto = (req, res) => {
+  if (req.post.photo.data) {
+    res.set(("Content-Type", req.post.photo.contentType));
+    return res.send(req.post.photo.data);
+  }
+};
