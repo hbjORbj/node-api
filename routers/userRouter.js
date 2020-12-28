@@ -13,11 +13,11 @@ const {
 const { requireLogin, isAccountOwner } = require("../middlewares");
 const userRouter = express.Router();
 
+userRouter.get("/users", getAllUsers);
 userRouter.put("/user/follow", requireLogin, followUser);
 userRouter.put("/user/unfollow", requireLogin, unfollowUser);
-userRouter.get("/users", getAllUsers);
 
-// User Id
+// :userId
 userRouter.get("/user/:userId", requireLogin, getUser);
 userRouter.put("/user/:userId", requireLogin, isAccountOwner, updateUser);
 userRouter.delete("/user/:userId", requireLogin, isAccountOwner, deleteUser);

@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const formidable = require("formidable");
 const fs = require("fs");
+const _ = require("lodash");
 
 /* 
 **
@@ -10,7 +11,8 @@ and add a post object (filled with post info) to req
 */
 exports.postById = (req, res, next, id) => {
   Post.findById(id)
-    .populate("postedBy", "_id name") // getting post owner's information
+    .populate("postedBy", "_id name")
+    .populate("likes", "_id name")
     .exec((err, post) => {
       if (err || !post) {
         return res.status(400).json({
@@ -99,14 +101,28 @@ exports.createPost = (req, res) => {
 Update a post
 **
 */
-exports.updatePost = async (req, res) => {
-  const { _id } = req.post;
-  const { title, body } = req.body;
-  await Post.updateOne({ _id }, { title, body, updated: Date.now() }, (err) => {
+exports.updatePost = (req, res) => {
+  let form = new formidable.IncomingForm();
+  form.keepExtensions = true;
+  form.parse(req, (err, fields, files) => {
     if (err) {
-      res.status(400).json({ error: "Post could not be updated." });
+      res.status(400).json({ error: "Image could not be uploaded." });
     } else {
-      res.json({ message: "Post has been updated successfully." });
+      let post = req.post;
+      post = _.extend(post, fields);
+      post.updated = Date.now();
+
+      if (files.photo) {
+        post.photo.data = fs.readFileSync(files.photo.path);
+        post.photo.contentType = files.photo.type;
+      }
+      post.save((err, result) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
     }
   });
 };
@@ -146,4 +162,51 @@ exports.getPostPhoto = (req, res) => {
     res.set(("Content-Type", req.post.photo.contentType));
     return res.send(req.post.photo.data);
   }
+};
+
+/* 
+**
+Like a post
+**
+*/
+exports.likePost = async (req, res) => {
+  const { userId, postId } = req.body;
+  console.log(req.body);
+  await Post.findByIdAndUpdate(
+    {
+      _id: postId,
+    },
+    {
+      $push: { likes: userId },
+    },
+    { new: true }
+  ).exec((err, result) => {
+    if (err) return res.status(400).json({ error: err });
+    else {
+      return res.json(result);
+    }
+  });
+};
+
+/* 
+**
+Unlike a post
+**
+*/
+exports.unlikePost = async (req, res) => {
+  const { userId, postId } = req.body;
+  await Post.findByIdAndUpdate(
+    {
+      _id: postId,
+    },
+    {
+      $pull: { likes: userId },
+    },
+    { new: true }
+  ).exec((err, result) => {
+    if (err) return res.status(400).json({ error: err });
+    else {
+      return res.json(result);
+    }
+  });
 };

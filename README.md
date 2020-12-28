@@ -27,8 +27,8 @@ Front-end App associated with these APIs is available [here](https://github.com/
 - [x] getPostsByUser()
 - [x] deletePost()
 - [x] updatePost()
-- [ ] likePost()
-- [ ] unlikePost()
+- [x] likePost()
+- [x] unlikePost()
 
 # Routes:
 

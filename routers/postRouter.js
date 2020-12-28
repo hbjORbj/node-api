@@ -8,6 +8,8 @@ const {
   updatePost,
   getPost,
   getPostPhoto,
+  likePost,
+  unlikePost,
 } = require("../controllers/postController");
 const { userById } = require("../controllers/userController");
 const {
@@ -18,13 +20,12 @@ const {
 } = require("../middlewares");
 const postRouter = express.Router();
 
-// GET method
 postRouter.get("/posts", getAllPosts);
-postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
-postRouter.get("/post/:postId", getPost);
-postRouter.get("/post/photo/:postId", getPostPhoto);
+postRouter.put("/post/like", requireLogin, likePost);
+postRouter.put("/post/unlike", requireLogin, unlikePost);
 
-// POST method
+// :userId
+postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
 postRouter.post(
   "/post/new/:userId",
   requireLogin,
@@ -33,11 +34,11 @@ postRouter.post(
   createPostValidator
 );
 
-// PUT method
+// :postId
+postRouter.get("/post/:postId", getPost);
 postRouter.put("/post/:postId", requireLogin, isPostOwner, updatePost);
-
-// DELETE method
 postRouter.delete("/post/:postId", requireLogin, isPostOwner, deletePost);
+postRouter.get("/post/photo/:postId", getPostPhoto);
 
 // For any route containing "userId", we execute userById() method
 postRouter.param("userId", userById);
