@@ -51,3 +51,6 @@ Front-end App associated with these APIs is available [here](https://github.com/
 - /api/post/new/:userId: create new post
 - /api/posts/by/:userId: get all posts by user
 - /api/post/:postId: update / delete post
+- /api/post/like: like post
+- /api/post/unlike: unlike post
+

@@ -158,9 +158,11 @@ Get a post's photo
 **
 */
 exports.getPostPhoto = (req, res) => {
-  if (req.post.photo.data) {
+  if (req.post.photo && req.post.photo.data) {
     res.set(("Content-Type", req.post.photo.contentType));
     return res.send(req.post.photo.data);
+  } else {
+    return res.send("No photo");
   }
 };
 
