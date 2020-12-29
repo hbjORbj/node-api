@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
   },
   followers: [{ type: ObjectId, ref: "User" }],
   following: [{ type: ObjectId, ref: "User" }],
+  resetPasswordLink: {
+    data: String,
+    default: "",
+  },
   hashedPassword: {
     type: String,
     trim: true,

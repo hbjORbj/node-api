@@ -50,7 +50,7 @@ exports.signUpValidator = (req, res, next) => {
     .withMessage("Invalid email address.");
 
   // password
-  req.check("password", "Set your password.").notEmpty();
+  req.check("password", "Type your password.").notEmpty();
   req
     .check("password")
     .isLength({ min: 6 })
