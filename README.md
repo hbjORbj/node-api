@@ -37,6 +37,8 @@ Front-end App associated with these APIs is available [here](https://github.com/
 - /api/signup: sign up
 - /api/login: log in
 - /api/logout: log out
+- /api/forgot-password: send password reset link
+- /api/reset-password: reset password
 
 ## User
 - /api/users: get all users
