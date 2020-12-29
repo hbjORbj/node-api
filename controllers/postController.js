@@ -11,6 +11,7 @@ and add a post object (filled with post info) to req
 */
 exports.postById = (req, res, next, id) => {
   Post.findById(id)
+    .populate("comments.postedBy", "_id name")
     .populate("postedBy", "_id name")
     .populate("likes", "_id name")
     .exec((err, post) => {
@@ -148,7 +149,7 @@ exports.deletePost = async (req, res) => {
 Get a post
 **
 */
-exports.getPost = async (req, res) => {
+exports.getPost = (req, res) => {
   return res.json(req.post);
 };
 
@@ -173,7 +174,6 @@ Like a post
 */
 exports.likePost = async (req, res) => {
   const { userId, postId } = req.body;
-  console.log(req.body);
   await Post.findByIdAndUpdate(
     {
       _id: postId,
@@ -212,3 +212,86 @@ exports.unlikePost = async (req, res) => {
     }
   });
 };
+
+/* 
+**
+Post comment
+**
+*/
+exports.postComment = async (req, res) => {
+  const { userId, postId, comment } = req.body;
+  comment.postedBy = userId;
+  await Post.findByIdAndUpdate(
+    { _id: postId },
+    {
+      $push: { comments: comment },
+    },
+    { new: true }
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) return res.status(400).json({ error: err });
+      else {
+        return res.json(result);
+      }
+    });
+};
+
+/* 
+**
+Delete comment
+**
+*/
+exports.deleteComment = async (req, res) => {
+  const { userId, postId, comment } = req.body;
+  comment.postedBy = userId;
+  await Post.findByIdAndUpdate(
+    { _id: postId },
+    {
+      $pull: { comments: { _id: comment._id } },
+    },
+    { new: true }
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) return res.status(400).json({ error: err });
+      else {
+        return res.json(result);
+      }
+    });
+};
+
+// /*
+// **
+// Update comment
+// **
+// */
+// exports.updateComment = (req, res) => {
+//   const { userId, postId, comment } = req.body;
+//   comment.postedBy = userId;
+//   Post.findByIdAndUpdate(
+//     { _id: postId },
+//     {
+//       $pull: { comments: { _id: comment._id } },
+//     }
+//   ).exec((err, result) => {
+//     if (err) return res.status(400).json({ error: err });
+//     else {
+//       Post.findByIdAndUpdate(
+//         { _id: postId },
+//         {
+//           $push: { comments: comment, updated: new Date() },
+//         },
+//         { new: true }
+//       )
+//         .populate("comments.postedBy", "_id name")
+//         .populate("postedBy", "_id name")
+//         .exec((err, result) => {
+//           if (err) return res.status(400).json({ error: err });
+//           else return res.json(result);
+//         });
+//     }
+//   });
+// };

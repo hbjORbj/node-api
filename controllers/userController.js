@@ -64,26 +64,10 @@ Get a single user
 **
 */
 exports.getUser = (req, res) => {
-  const {
-    _id,
-    name,
-    email,
-    followers,
-    following,
-    about,
-    created,
-    updated,
-  } = req.profile;
-  return res.json({
-    _id,
-    name,
-    email,
-    followers,
-    following,
-    about,
-    created,
-    updated,
-  });
+  const user = req.profile;
+  user.hashedPassword = undefined;
+  user.salt = undefined;
+  return res.json(user);
 };
 
 /* 

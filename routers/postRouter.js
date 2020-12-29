@@ -10,6 +10,8 @@ const {
   getPostPhoto,
   likePost,
   unlikePost,
+  postComment,
+  deleteComment,
 } = require("../controllers/postController");
 const { userById } = require("../controllers/userController");
 const {
@@ -23,6 +25,8 @@ const postRouter = express.Router();
 postRouter.get("/posts", getAllPosts);
 postRouter.put("/post/like", requireLogin, likePost);
 postRouter.put("/post/unlike", requireLogin, unlikePost);
+postRouter.put("/post/comment", requireLogin, postComment);
+postRouter.put("/post/uncomment", requireLogin, deleteComment);
 
 // :userId
 postRouter.get("/posts/by/:userId", requireLogin, getPostsByUser);
