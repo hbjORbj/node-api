@@ -78,12 +78,7 @@ Log In Validator
 exports.loginValidator = (req, res, next) => {
   // Check email
   req.check("email", "Type your email.").notEmpty();
-  req
-    .check("email")
-    .matches(
-      /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
-    )
-    .withMessage("Invalid email address.");
+  req.check("email").isEmail().withMessage("Invalid email address.");
 
   // Check password
   req.check("password", "Type your password.").notEmpty();
@@ -94,6 +89,56 @@ exports.loginValidator = (req, res, next) => {
     })
     .withMessage("Password must contain at least 6 characters or numbers.");
 
+  // check for errors
+  const errors = req.validationErrors();
+
+  if (errors) {
+    const firstError = errors[0].msg;
+    return res.status(400).json({ error: firstError });
+  }
+
+  // proceed to next middleware
+  next();
+};
+
+/* 
+**
+Password Validator 
+**
+*/
+exports.passwordValidator = (req, res, next) => {
+  // Check password
+  req.check("newPassword", "Type your new password.").notEmpty();
+  req
+    .check("newPassword")
+    .isLength({
+      min: 6,
+    })
+    .withMessage("Password must contain at least 6 characters or numbers.")
+    .matches(/\d/)
+    .withMessage("Your password must contain one or more numbers.");
+
+  // check for errors
+  const errors = req.validationErrors();
+
+  if (errors) {
+    const firstError = errors[0].msg;
+    return res.status(400).json({ error: firstError });
+  }
+
+  // proceed to next middleware
+  next();
+};
+
+/* 
+**
+Email Validator 
+**
+*/
+exports.emailValidator = (req, res, next) => {
+  // Check email
+  req.check("email", "Type your email.").notEmpty();
+  req.check("email").isEmail().withMessage("Invalid email address.");
   // check for errors
   const errors = req.validationErrors();
 

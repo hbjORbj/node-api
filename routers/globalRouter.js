@@ -6,7 +6,12 @@ const {
   sendPasswordResetLink,
   resetPassword,
 } = require("../controllers/globalController");
-const { loginValidator, signUpValidator } = require("../middlewares");
+const {
+  loginValidator,
+  signUpValidator,
+  emailValidator,
+  passwordValidator,
+} = require("../middlewares");
 const globalRouter = express.Router();
 
 // GET method
@@ -17,7 +22,7 @@ globalRouter.post("/login", loginValidator, login);
 globalRouter.post("/signup", signUpValidator, signUp);
 
 // PUT method
-globalRouter.put("/forgot-password", sendPasswordResetLink);
-globalRouter.put("/reset-password", resetPassword);
+globalRouter.put("/forgot-password", emailValidator, sendPasswordResetLink);
+globalRouter.put("/reset-password", passwordValidator, resetPassword);
 
 module.exports = globalRouter;
