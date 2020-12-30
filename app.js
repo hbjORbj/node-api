@@ -35,8 +35,11 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
-app.use(cors());
 
+// CORS
+if (process.env.NODE_ENV === "development") {
+  app.use(cors({ origin: `${process.env.CLIENT_URL}` }));
+}
 // routers
 app.get("/api", (req, res) => {
   fs.readFile("docs/apiDoc.json", (err, data) => {
