@@ -3,10 +3,17 @@
     "/api/signup": "sign up",
     "/api/login": "log in",
     "/api/logout": "log out",
+    "/api/forgot-password": "send password reset link",
+    "/api/reset-password": "reset password",
     "/api/users": "get all users",
     "/api/user/:userId": "get / update / delete user",
+    "/api/user/findpeople": "userId: find users not being followed by logged-in user",
+    "/api/user/follow": "follow user",
+    "/api/user/unfollow": "unfollow user",
     "/api/posts": "get all posts",
     "/api/post/new/:userId": "create new post",
     "/api/posts/by/:userId": "get all posts by user",
-    "/api/post/:postId": "update / delete post"
+    "/api/post/:postId": "update / delete post",
+    "/api/post/like": "like post",
+    "/api/post/unlike": "unlike post"
 }
